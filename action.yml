@@ -3,8 +3,8 @@ description: "Format NSIS scripts with ardent"
 author: "Jan T. Sott"
 
 branding:
-  icon: "command"
-  color: "blue"
+  icon: "align-right"
+  color: gray-dark
 
 inputs:
   version:
