@@ -34,19 +34,19 @@ GitHub Action to format NSIS scripts using [ardent](https://github.com/idleberg/
 
 ## Inputs
 
-| Input | Description | Required | Default |
-|-------|-------------|----------|---------|
-| `version` | Version of ardent to install | No | (latest) |
-| `files` | Files or glob patterns to format (space-separated) | No | `**/*.nsi **/*.nsh` |
-| `eol` | Line ending style (`crlf` or `lf`) | No | (platform default) |
-| `indent-size` | Number of units per indentation level | No | |
-| `use-spaces` | Indent with spaces instead of tabs | No | `false` |
-| `no-trim` | Do not trim empty lines | No | `false` |
-| `print-width` | Maximum line width before wrapping (0 to disable) | No | |
-| `check-only` | Only check formatting without modifying files | No | `false` |
-| `all-files` | Format all files, not just changed ones (PRs only) | No | `false` |
-| `base-branch` | Base branch to diff PR branches against | No | (PR target) |
-| `working-directory` | Working directory to run ardent in | No | (root) |
+| Input               | Description                                        | Required | Default             |
+| ------------------- | -------------------------------------------------- | -------- | ------------------- |
+| `version`           | Version of ardent to install                       | No       | (latest)            |
+| `files`             | Files or glob patterns to format (space-separated) | No       | `**/*.nsi **/*.nsh` |
+| `eol`               | Line ending style (`crlf` or `lf`)                 | No       | (platform default)  |
+| `indent-size`       | Number of units per indentation level              | No       |                     |
+| `use-spaces`        | Indent with spaces instead of tabs                 | No       | `false`             |
+| `no-trim`           | Do not trim empty lines                            | No       | `false`             |
+| `print-width`       | Maximum line width before wrapping (0 to disable)  | No       |                     |
+| `check-only`        | Only check formatting without modifying files      | No       | `false`             |
+| `all-files`         | Format all files, not just changed ones (PRs only) | No       | `false`             |
+| `base-branch`       | Base branch to diff PR branches against            | No       | (PR target)         |
+| `working-directory` | Working directory to run ardent in                 | No       | (root)              |
 
 ## Behavior
 
