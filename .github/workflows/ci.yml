@@ -112,7 +112,17 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run action (default glob)
+        id: glob
         uses: ./
         with:
           check-only: "true"
           all-files: "true"
+        continue-on-error: true
+
+      - name: Verify glob matched files
+        run: |
+          if [ "${{ steps.glob.outcome }}" != "failure" ]; then
+            echo "::error::Check should have failed (unformatted fixtures exist)"
+            exit 1
+          fi
+          echo "Glob patterns correctly matched NSIS files"
