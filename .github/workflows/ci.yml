@@ -11,7 +11,7 @@ jobs:
     name: "Test: Format Mode"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Copy unformatted fixture
         run: cp tests/fixtures/unformatted.nsi tests/fixtures/test-output.nsi
@@ -34,7 +34,7 @@ jobs:
     name: "Test: Check Mode (pass)"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Run action (check-only on formatted file)
         uses: ./
@@ -47,7 +47,7 @@ jobs:
     name: "Test: Check Mode (fail)"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Run action (check-only on unformatted file)
         id: check
@@ -83,7 +83,7 @@ jobs:
           - name: "crlf"
             eol: "crlf"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Copy unformatted fixture
         run: cp tests/fixtures/unformatted.nsi tests/fixtures/test-output.nsi
@@ -109,7 +109,7 @@ jobs:
     name: "Test: Glob Patterns"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Run action (default glob)
         id: glob

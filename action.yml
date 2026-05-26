@@ -89,7 +89,7 @@ runs:
         BASE_BRANCH: ${{ steps.base-branch.outputs.base-branch }}
 
     - name: Setup ardent
-      uses: idleberg/setup-ardent@v1
+      uses: idleberg/setup-ardent@ea69cc9475a7a312e765211ae5638327bcc29d2c # v1.0.0
       with:
         version: ${{ inputs.version }}
 
