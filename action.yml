@@ -47,16 +47,6 @@ inputs:
     required: false
     default: "false"
 
-  all-files:
-    description: "Format all files, not just changed ones. Only affects PRs."
-    required: false
-    default: "false"
-
-  base-branch:
-    description: "Base branch to diff PR branches against."
-    required: false
-    default: ""  # Default to PR target branch
-
   working-directory:
     description: "Working directory to run ardent in."
     required: false
@@ -65,59 +55,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set Base Branch
-      id: base-branch
-      shell: bash
-      if: github.event_name == 'pull_request'
-      env:
-        BASE_BRANCH_INPUT: ${{ inputs.base-branch }}
-        PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
-      run: |
-        if [ -z "$BASE_BRANCH_INPUT" ]; then
-          echo "Base branch not set. Defaulting to target branch of PR."
-          echo "base-branch=$PR_BASE_REF" >> "$GITHUB_OUTPUT"
-        else
-          echo "base-branch=$BASE_BRANCH_INPUT" >> "$GITHUB_OUTPUT"
-        fi
-
-    - name: Fetch Base Branch
-      shell: bash
-      if: github.event_name == 'pull_request'
-      run: |
-        git fetch origin $BASE_BRANCH:$BASE_BRANCH --depth=1
-      env:
-        BASE_BRANCH: ${{ steps.base-branch.outputs.base-branch }}
-
     - name: Setup ardent
       uses: idleberg/setup-ardent@ea69cc9475a7a312e765211ae5638327bcc29d2c # v1.0.0
       with:
         version: ${{ inputs.version }}
 
-    - name: Run ardent (Changed Files)
+    - name: Run ardent
       shell: bash
-      if: github.event_name == 'pull_request' && inputs.all-files == 'false'
       working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "::group::Run ardent (Changed Files)"
-        files=$(git diff --name-only --relative ${{ steps.base-branch.outputs.base-branch }} ${{ github.sha }})
-        echo "::debug::Files:"
-        echo "::debug::${files}"
-        $GITHUB_ACTION_PATH/ardent.sh $files
-        echo "::endgroup::"
-      env:
-        ARDENT_EOL: ${{ inputs.eol }}
-        ARDENT_INDENT_SIZE: ${{ inputs.indent-size }}
-        ARDENT_USE_SPACES: ${{ inputs.use-spaces }}
-        ARDENT_NO_TRIM: ${{ inputs.no-trim }}
-        ARDENT_PRINT_WIDTH: ${{ inputs.print-width }}
-        ARDENT_CHECK_ONLY: ${{ inputs.check-only }}
-
-    - name: Run ardent (All Files)
-      shell: bash
-      if: github.event_name != 'pull_request' || inputs.all-files == 'true'
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        echo "::group::Run ardent (All Files)"
+        echo "::group::Run ardent"
         if [ "$ARDENT_CHECK_ONLY" = "true" ]; then
           ardent check $ARDENT_ARGS ${{ inputs.files }}
         else
@@ -125,11 +72,6 @@ runs:
         fi
         echo "::endgroup::"
       env:
-        ARDENT_EOL: ${{ inputs.eol }}
-        ARDENT_INDENT_SIZE: ${{ inputs.indent-size }}
-        ARDENT_USE_SPACES: ${{ inputs.use-spaces }}
-        ARDENT_NO_TRIM: ${{ inputs.no-trim }}
-        ARDENT_PRINT_WIDTH: ${{ inputs.print-width }}
         ARDENT_CHECK_ONLY: ${{ inputs.check-only }}
         ARDENT_ARGS: |
           ${{ inputs.eol != '' && format('--eol {0}', inputs.eol) || '' }}

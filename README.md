@@ -44,19 +44,7 @@ GitHub Action to format NSIS scripts using [ardent](https://github.com/idleberg/
 | `no-trim`           | Do not trim empty lines                            | No       | `false`             |
 | `print-width`       | Maximum line width before wrapping (0 to disable)  | No       |                     |
 | `check-only`        | Only check formatting without modifying files      | No       | `false`             |
-| `all-files`         | Format all files, not just changed ones (PRs only) | No       | `false`             |
-| `base-branch`       | Base branch to diff PR branches against            | No       | (PR target)         |
 | `working-directory` | Working directory to run ardent in                 | No       | (root)              |
-
-## Behavior
-
-### Pull Requests
-
-By default, only changed `.nsi` and `.nsh` files are formatted. The action diffs against the PR's target branch to determine which files have changed. Set `all-files: "true"` to format all matching files instead.
-
-### Push Events
-
-All files matching the `files` pattern are formatted.
 
 ## Example Workflows
 

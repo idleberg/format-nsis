@@ -20,7 +20,6 @@ jobs:
         uses: ./
         with:
           files: "tests/fixtures/test-output.nsi"
-          all-files: "true"
 
       - name: Verify files were formatted
         run: |
@@ -41,7 +40,6 @@ jobs:
         with:
           files: "tests/fixtures/formatted.nsi"
           check-only: "true"
-          all-files: "true"
 
   test-check-fail:
     name: "Test: Check Mode (fail)"
@@ -55,7 +53,6 @@ jobs:
         with:
           files: "tests/fixtures/unformatted.nsi"
           check-only: "true"
-          all-files: "true"
         continue-on-error: true
 
       - name: Verify check failed
@@ -92,7 +89,6 @@ jobs:
         uses: ./
         with:
           files: "tests/fixtures/test-output.nsi"
-          all-files: "true"
           eol: ${{ matrix.eol || '' }}
           indent-size: ${{ matrix.indent-size || '' }}
           use-spaces: ${{ matrix.use-spaces || 'false' }}
@@ -116,7 +112,6 @@ jobs:
         uses: ./
         with:
           check-only: "true"
-          all-files: "true"
         continue-on-error: true
 
       - name: Verify glob matched files
