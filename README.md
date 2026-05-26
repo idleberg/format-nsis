@@ -1,4 +1,4 @@
-# NSIS Format
+# Format NSIS
 
 GitHub Action to format NSIS scripts using [ardent](https://github.com/idleberg/ardent).
 
