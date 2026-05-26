@@ -105,7 +105,7 @@ jobs:
 
 ## Related
 
-- [setup-ardent](https://github.com/idleberg/setup-ardent) - GitHub Action to install ardent
+- [setup-ardent](https://github.com/marketplace/actions/setup-ardent) - GitHub Action to install ardent
 - [ardent](https://github.com/idleberg/ardent) - Opinionated formatter for NSIS scripts
 
 ## License
