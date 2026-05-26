@@ -10,7 +10,7 @@ Section "Main" SEC_MAIN
 	File "readme.txt"
 
 	CreateDirectory "$SMPROGRAMS\Test"
-	CreateShortCut "$SMPROGRAMS\Test\App.lnk" "$INSTDIR\app.exe"
+	CreateShortcut "$SMPROGRAMS\Test\App.lnk" "$INSTDIR\app.exe"
 
 	WriteUninstaller "$INSTDIR\uninstall.exe"
 SectionEnd
