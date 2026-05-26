@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    name: Update major version tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: richardsimko/update-tag@aab2434e9a5040687874aa39d1c6377ec0cb0d94 # v1.1.6
+        with:
+          tag_name: v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

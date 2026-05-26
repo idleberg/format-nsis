@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-format:
+    name: "Test: Format Mode"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy unformatted fixture
+        run: cp tests/fixtures/unformatted.nsi tests/fixtures/test-output.nsi
+
+      - name: Run action (format)
+        uses: ./
+        with:
+          files: "tests/fixtures/test-output.nsi"
+          all-files: "true"
+
+      - name: Verify files were formatted
+        run: |
+          if diff -q tests/fixtures/test-output.nsi tests/fixtures/unformatted.nsi > /dev/null 2>&1; then
+            echo "::error::File was not modified by formatter"
+            exit 1
+          fi
+          echo "File was formatted successfully"
+
+  test-check-pass:
+    name: "Test: Check Mode (pass)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run action (check-only on formatted file)
+        uses: ./
+        with:
+          files: "tests/fixtures/formatted.nsi"
+          check-only: "true"
+          all-files: "true"
+
+  test-check-fail:
+    name: "Test: Check Mode (fail)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run action (check-only on unformatted file)
+        id: check
+        uses: ./
+        with:
+          files: "tests/fixtures/unformatted.nsi"
+          check-only: "true"
+          all-files: "true"
+        continue-on-error: true
+
+      - name: Verify check failed
+        run: |
+          if [ "${{ steps.check.outcome }}" != "failure" ]; then
+            echo "::error::Check should have failed on unformatted file"
+            exit 1
+          fi
+          echo "Check correctly detected unformatted file"
+
+  test-nsh-files:
+    name: "Test: NSH Files"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run action (check .nsh file)
+        uses: ./
+        with:
+          files: "tests/fixtures/helper.nsh"
+          check-only: "true"
+          all-files: "true"
+
+  test-options:
+    name: "Test: Formatting Options"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: "spaces"
+            use-spaces: "true"
+            indent-size: "4"
+          - name: "tabs"
+            use-spaces: "false"
+            indent-size: "2"
+          - name: "lf"
+            eol: "lf"
+          - name: "crlf"
+            eol: "crlf"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy unformatted fixture
+        run: cp tests/fixtures/unformatted.nsi tests/fixtures/test-output.nsi
+
+      - name: "Run action (${{ matrix.name }})"
+        uses: ./
+        with:
+          files: "tests/fixtures/test-output.nsi"
+          all-files: "true"
+          eol: ${{ matrix.eol || '' }}
+          indent-size: ${{ matrix.indent-size || '' }}
+          use-spaces: ${{ matrix.use-spaces || 'false' }}
+
+      - name: Verify formatting applied
+        run: |
+          if diff -q tests/fixtures/test-output.nsi tests/fixtures/unformatted.nsi > /dev/null 2>&1; then
+            echo "::error::File was not modified by formatter"
+            exit 1
+          fi
+          echo "Formatting with ${{ matrix.name }} options applied successfully"
+
+  test-glob-patterns:
+    name: "Test: Glob Patterns"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run action (default glob)
+        uses: ./
+        with:
+          check-only: "true"
+          all-files: "true"
